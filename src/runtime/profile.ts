@@ -1,6 +1,6 @@
 import { BUILD } from '@app-data';
 import { getHostRef, win } from '@platform';
-import { HOST_FLAGS } from '@utils';
+import { HOST_FLAGS, MEMBER_FLAGS } from '@utils';
 import { setDevtoolsHook } from './devtools';
 
 let i = 0;
@@ -44,6 +44,7 @@ const inspect = (ref: any) => {
   }
   const flags = hostRef.$flags$;
   const hostElement = hostRef.$hostElement$;
+  const members = hostRef.$cmpMeta$.$members$ || {}
   return {
     renderCount: hostRef.$renderCount$,
     flags: {
@@ -58,6 +59,25 @@ const inspect = (ref: any) => {
       isListenReady: !!(flags & HOST_FLAGS.isListenReady),
       needsRerender: !!(flags & HOST_FLAGS.needsRerender),
     },
+    members: Object.entries(members).reduce((prev, [key, [flag, observedAttributeName]]) => {
+      prev[key] = {
+        observedAttributeName,
+        isNumber: !!(flag & MEMBER_FLAGS.Number),
+        isBoolean: !!(flag & MEMBER_FLAGS.Boolean),
+        isAny: !!(flag & MEMBER_FLAGS.Any),
+        isUnknown: !!(flag & MEMBER_FLAGS.Unknown),
+        isState: !!(flag & MEMBER_FLAGS.State),
+        isMethod: !!(flag & MEMBER_FLAGS.Method),
+        isEvent: !!(flag & MEMBER_FLAGS.Event),
+        isElement: !!(flag & MEMBER_FLAGS.Element),
+        isReflectAttr: !!(flag & MEMBER_FLAGS.ReflectAttr),
+        isMutable: !!(flag & MEMBER_FLAGS.Mutable),
+        isProp: !!(flag & MEMBER_FLAGS.Prop),
+        isHasAttribute: !!(flag & MEMBER_FLAGS.HasAttribute),
+        isPropLike: !!(flag & MEMBER_FLAGS.PropLike)
+      }
+      return prev
+    }, {} as Record<string, any>),
     instanceValues: hostRef.$instanceValues$,
     ancestorComponent: hostRef.$ancestorComponent$,
     hostElement,
