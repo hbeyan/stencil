@@ -1,6 +1,7 @@
 import { BUILD } from '@app-data';
 import { getHostRef, win } from '@platform';
 import { HOST_FLAGS } from '@utils';
+import { setDevtoolsHook } from './devtools';
 
 let i = 0;
 
@@ -91,5 +92,7 @@ export const installDevTools = () => {
       }
       return result;
     };
+
+    stencil.setDevtoolsHook = setDevtoolsHook;
   }
 };

@@ -41,6 +41,7 @@ export {
   Prop,
   readTask,
   setAssetPath,
+  setDevtoolsHook,
   setErrorHandler,
   setMode,
   setNonce,

@@ -4,6 +4,7 @@ import { CMP_FLAGS, HOST_FLAGS, MEMBER_FLAGS } from '@utils';
 
 import type * as d from '../declarations';
 import { initializeClientHydrate } from './client-hydrate';
+import { devtoolsComponentAdded } from './devtools';
 import { fireConnectedCallback, initializeComponent } from './initialize-component';
 import { createTime } from './profile';
 import { HYDRATE_ID, NODE_TYPE, PLATFORM_FLAGS } from './runtime-constants';
@@ -111,6 +112,10 @@ export const connectedCallback = (elm: d.HostElement) => {
       } else if (hostRef?.$onReadyPromise$) {
         hostRef.$onReadyPromise$.then(() => fireConnectedCallback(hostRef.$lazyInstance$));
       }
+    }
+
+    if (BUILD.devTools) {
+      devtoolsComponentAdded(hostRef)
     }
 
     endConnected();

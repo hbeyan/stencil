@@ -2,6 +2,7 @@ export { getAssetPath, setAssetPath } from './asset-path';
 export { defineCustomElement, forceModeUpdate, proxyCustomElement } from './bootstrap-custom-element';
 export { bootstrapLazy } from './bootstrap-lazy';
 export { connectedCallback } from './connected-callback';
+export { setDevtoolsHook } from './devtools';
 export { disconnectedCallback } from './disconnected-callback';
 export { getElement } from './element';
 export { createEvent } from './event-emitter';

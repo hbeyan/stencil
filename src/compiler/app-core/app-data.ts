@@ -149,7 +149,7 @@ export const updateBuildConditionals = (config: ValidatedConfig, b: BuildConditi
   b.isDebug = config.logLevel === 'debug';
   b.isDev = !!config.devMode;
   b.isTesting = !!config._isTesting;
-  b.devTools = b.isDev && !config._isTesting;
+  b.devTools = true || b.isDev && !config._isTesting;
   b.profile = !!config.profile;
   b.hotModuleReplacement = !!(
     config.devMode &&

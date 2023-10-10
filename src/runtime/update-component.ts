@@ -3,6 +3,7 @@ import { Build, consoleError, doc, getHostRef, nextTick, plt, win, writeTask } f
 import { CMP_FLAGS, HOST_FLAGS } from '@utils';
 
 import type * as d from '../declarations';
+import { devtoolsComponentUpdated } from './devtools';
 import { emitEvent } from './event-emitter';
 import { createTime } from './profile';
 import { PLATFORM_FLAGS } from './runtime-constants';
@@ -214,6 +215,10 @@ const updateComponent = async (
     }
   } else {
     postUpdateComponent(hostRef);
+  }
+
+  if (BUILD.devTools) {
+    devtoolsComponentUpdated(hostRef)
   }
 };
 

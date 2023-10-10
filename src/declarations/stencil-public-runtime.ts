@@ -4,6 +4,20 @@ declare type CustomMethodDecorator<T> = (
   descriptor: TypedPropertyDescriptor<T>,
 ) => TypedPropertyDescriptor<T> | void;
 
+export const enum DevtoolsHooks {
+  COMPONENT_UPDATED = 'component:updated',
+  COMPONENT_ADDED = 'component:added',
+  COMPONENT_REMOVED = 'component:removed',
+}
+
+export interface DevtoolsHook {
+  enabled?: boolean
+  emit: (event: DevtoolsHooks, ...payload: any[]) => void
+  on: (event: DevtoolsHooks, handler: Function) => void
+  once: (event: DevtoolsHooks, handler: Function) => void
+  off: (event: DevtoolsHooks, handler: Function) => void
+}
+
 export interface ComponentDecorator {
   (opts?: ComponentOptions): ClassDecorator;
 }
@@ -359,6 +373,11 @@ export declare function readTask(task: RafCallback): void;
  * Unhandled exception raised while rendering, during event handling, or lifecycles will trigger the custom event handler.
  */
 export declare const setErrorHandler: (handler: ErrorHandler) => void;
+
+/**
+ * tbd
+ */
+export declare const setDevtoolsHook: (hook: DevtoolsHook) => void;
 
 /**
  * This file gets copied to all distributions of stencil component collections.

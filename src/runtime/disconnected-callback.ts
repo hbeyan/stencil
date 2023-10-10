@@ -2,6 +2,7 @@ import { BUILD } from '@app-data';
 import { getHostRef, plt } from '@platform';
 
 import type * as d from '../declarations';
+import { devtoolsComponentRemoved } from './devtools';
 import { PLATFORM_FLAGS } from './runtime-constants';
 import { safeCall } from './update-component';
 
@@ -31,6 +32,10 @@ export const disconnectedCallback = async (elm: d.HostElement) => {
       disconnectInstance(hostRef.$lazyInstance$);
     } else if (hostRef?.$onReadyPromise$) {
       hostRef.$onReadyPromise$.then(() => disconnectInstance(hostRef.$lazyInstance$));
+    }
+
+    if (BUILD.devTools) {
+      devtoolsComponentRemoved(hostRef)
     }
   }
 };

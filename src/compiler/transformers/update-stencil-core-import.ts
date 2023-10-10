@@ -76,6 +76,7 @@ const KEEP_IMPORTS = new Set([
   'h',
   'setMode',
   'getMode',
+  'setDevtoolsHook',
   'setPlatformHelpers',
   'Build',
   'Env',
