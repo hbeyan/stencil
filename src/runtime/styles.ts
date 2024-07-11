@@ -130,7 +130,7 @@ export const addStyle = (styleContainerNode: any, cmpMeta: d.ComponentRuntimeMet
  */
 export const attachStyles = (hostRef: d.HostRef) => {
   const cmpMeta = hostRef.$cmpMeta$;
-  const elm = hostRef.$hostElement$;
+  const elm = hostRef.$hostElement$.deref();
   const flags = cmpMeta.$flags$;
   const endAttachStyles = createTime('attachStyles', cmpMeta.$tagName$);
   const scopeId = addStyle(

@@ -42,7 +42,7 @@ const inspect = (ref: any) => {
     return undefined;
   }
   const flags = hostRef.$flags$;
-  const hostElement = hostRef.$hostElement$;
+  const hostElement = hostRef.$hostElement$.deref();
   return {
     renderCount: hostRef.$renderCount$,
     flags: {

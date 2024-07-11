@@ -43,7 +43,7 @@ export const scheduleUpdate = (hostRef: d.HostRef, isInitialLoad: boolean) => {
  * the component
  */
 const dispatchHooks = (hostRef: d.HostRef, isInitialLoad: boolean): Promise<void> => {
-  const elm = hostRef.$hostElement$;
+  const elm = hostRef.$hostElement$.deref();
   const endSchedule = createTime('scheduleUpdate', hostRef.$cmpMeta$.$tagName$);
   const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$ : elm;
 
@@ -173,7 +173,7 @@ const updateComponent = async (
   instance: d.HostElement | d.ComponentInterface,
   isInitialLoad: boolean,
 ) => {
-  const elm = hostRef.$hostElement$ as d.RenderNode;
+  const elm = hostRef.$hostElement$.deref() as d.RenderNode;
   const endUpdate = createTime('update', hostRef.$cmpMeta$.$tagName$);
   const rc = elm['s-rc'];
   if (BUILD.style && isInitialLoad) {
@@ -299,7 +299,7 @@ const callRender = (hostRef: d.HostRef, instance: any, elm: HTMLElement, isIniti
       }
     }
   } catch (e) {
-    consoleError(e, hostRef.$hostElement$);
+    consoleError(e, hostRef.$hostElement$.deref());
   }
   renderingRef = null;
   return null;
@@ -309,7 +309,7 @@ export const getRenderingRef = () => renderingRef;
 
 export const postUpdateComponent = (hostRef: d.HostRef) => {
   const tagName = hostRef.$cmpMeta$.$tagName$;
-  const elm = hostRef.$hostElement$;
+  const elm = hostRef.$hostElement$.deref();
   const endPostUpdate = createTime('postUpdate', tagName);
   const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$ : (elm as any);
   const ancestorComponent = hostRef.$ancestorComponent$;
@@ -393,7 +393,7 @@ export const postUpdateComponent = (hostRef: d.HostRef) => {
 export const forceUpdate = (ref: any) => {
   if (BUILD.updatable && (Build.isBrowser || Build.isTesting)) {
     const hostRef = getHostRef(ref);
-    const isConnected = hostRef.$hostElement$.isConnected;
+    const isConnected = hostRef.$hostElement$.deref().isConnected;
     if (
       isConnected &&
       (hostRef.$flags$ & (HOST_FLAGS.hasRendered | HOST_FLAGS.isQueuedForUpdate)) === HOST_FLAGS.hasRendered
