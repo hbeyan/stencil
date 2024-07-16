@@ -87,7 +87,7 @@ export const initializeComponent = async (
         hostRef.$flags$ |= HOST_FLAGS.isWatchReady;
       }
       endNewInstance();
-      fireConnectedCallback(hostRef.$lazyInstance$);
+      fireConnectedCallback(hostRef.$lazyInstance$.deref());
     } else {
       // sync constructor component
       Cstr = elm.constructor as any;

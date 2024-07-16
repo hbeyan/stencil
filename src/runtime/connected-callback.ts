@@ -107,10 +107,10 @@ export const connectedCallback = (elm: d.HostElement) => {
       addHostEventListeners(elm, hostRef, cmpMeta.$listeners$, false);
 
       // fire off connectedCallback() on component instance
-      if (hostRef?.$lazyInstance$) {
-        fireConnectedCallback(hostRef.$lazyInstance$);
+      if (hostRef?.$lazyInstance$?.deref()) {
+        fireConnectedCallback(hostRef.$lazyInstance$.deref());
       } else if (hostRef?.$onReadyPromise$) {
-        hostRef.$onReadyPromise$.then(() => fireConnectedCallback(hostRef.$lazyInstance$));
+        hostRef.$onReadyPromise$.then(() => fireConnectedCallback(hostRef.$lazyInstance$.deref()));
       }
     }
 

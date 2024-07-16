@@ -1571,7 +1571,7 @@ export interface HostRef {
   $cmpMeta$: ComponentRuntimeMeta;
   $hostElement$: WeakRef<HostElement>;
   $instanceValues$?: Map<string, any>;
-  $lazyInstance$?: ComponentInterface;
+  $lazyInstance$?: WeakRef<ComponentInterface>;
   /**
    * A promise that gets resolved if `BUILD.asyncLoading` is enabled and after the `componentDidLoad`
    * and before the `componentDidUpdate` lifecycle events are triggered.

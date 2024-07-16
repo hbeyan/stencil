@@ -45,7 +45,7 @@ export const scheduleUpdate = (hostRef: d.HostRef, isInitialLoad: boolean) => {
 const dispatchHooks = (hostRef: d.HostRef, isInitialLoad: boolean): Promise<void> => {
   const elm = hostRef.$hostElement$.deref();
   const endSchedule = createTime('scheduleUpdate', hostRef.$cmpMeta$.$tagName$);
-  const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$ : elm;
+  const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$.deref() : elm;
 
   /**
    * Given a user imports a component compiled with a `dist-custom-element`
@@ -311,7 +311,7 @@ export const postUpdateComponent = (hostRef: d.HostRef) => {
   const tagName = hostRef.$cmpMeta$.$tagName$;
   const elm = hostRef.$hostElement$.deref();
   const endPostUpdate = createTime('postUpdate', tagName);
-  const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$ : (elm as any);
+  const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$.deref() : (elm as any);
   const ancestorComponent = hostRef.$ancestorComponent$;
 
   if (BUILD.cmpDidRender) {

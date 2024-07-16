@@ -35,7 +35,8 @@ export const setValue = (ref: d.RuntimeRef, propName: string, newVal: any, cmpMe
   const elm = BUILD.lazyLoad ? hostRef.$hostElement$.deref() : (ref as d.HostElement);
   const oldVal = hostRef.$instanceValues$.get(propName);
   const flags = hostRef.$flags$;
-  const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$ : (elm as any);
+  console.log('IDK', hostRef, hostRef.$lazyInstance$);
+  const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$?.deref() : (elm as any);
   newVal = parsePropertyValue(newVal, cmpMeta.$members$[propName][0]);
 
   // explicitly check for NaN on both sides, as `NaN === NaN` is always false

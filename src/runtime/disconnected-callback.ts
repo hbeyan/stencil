@@ -27,10 +27,10 @@ export const disconnectedCallback = async (elm: d.HostElement) => {
 
     if (!BUILD.lazyLoad) {
       disconnectInstance(elm);
-    } else if (hostRef?.$lazyInstance$) {
-      disconnectInstance(hostRef.$lazyInstance$);
+    } else if (hostRef?.$lazyInstance$?.deref()) {
+      disconnectInstance(hostRef.$lazyInstance$.deref());
     } else if (hostRef?.$onReadyPromise$) {
-      hostRef.$onReadyPromise$.then(() => disconnectInstance(hostRef.$lazyInstance$));
+      hostRef.$onReadyPromise$.then(() => disconnectInstance(hostRef.$lazyInstance$.deref()));
     }
   }
 };

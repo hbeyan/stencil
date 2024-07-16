@@ -226,7 +226,7 @@ export async function newSpecPage(opts: NewSpecPageOptions): Promise<SpecPage> {
     get() {
       const hostRef = getHostRef(page.root);
       if (hostRef != null) {
-        return hostRef.$lazyInstance$;
+        return hostRef.$lazyInstance$.deref();
       }
       return null;
     },

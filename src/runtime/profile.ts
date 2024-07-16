@@ -60,7 +60,7 @@ const inspect = (ref: any) => {
     instanceValues: hostRef.$instanceValues$,
     ancestorComponent: hostRef.$ancestorComponent$,
     hostElement,
-    lazyInstance: hostRef.$lazyInstance$,
+    lazyInstance: hostRef.$lazyInstance$.deref(),
     vnode: hostRef.$vnode$,
     modeName: hostRef.$modeName$,
     onReadyPromise: hostRef.$onReadyPromise$,

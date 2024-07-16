@@ -37,8 +37,11 @@ export const getHostRef = (ref: d.RuntimeRef): d.HostRef | undefined => hostRefs
  * @param hostRef that instances `HostRef` object
  * @returns a reference to the host ref WeakMap
  */
-export const registerInstance = (lazyInstance: any, hostRef: d.HostRef) =>
-  hostRefs.set((hostRef.$lazyInstance$ = lazyInstance), hostRef);
+export const registerInstance = (lazyInstance: any, hostRef: d.HostRef) => {
+  hostRef.$lazyInstance$ = new WeakRef(lazyInstance);
+  console.log('REGISTER INSTANCE', hostRef);
+  return hostRefs.set(lazyInstance, hostRef);
+};
 
 /**
  * Register a host element for a Stencil component, setting up various metadata
