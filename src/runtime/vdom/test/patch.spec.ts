@@ -14,7 +14,7 @@ describe('renderer', () => {
   beforeEach(() => {
     hostElm = document.createElement('div');
     vnode0 = newVNode(null, null);
-    vnode0.$elm$ = hostElm;
+    vnode0.$elm$ = new WeakRef(hostElm);
   });
 
   describe('functional component', () => {
@@ -25,7 +25,7 @@ describe('renderer', () => {
       hostElm = document.createElement('my-tag');
 
       const vnode0 = newVNode(null, null);
-      vnode0.$elm$ = hostElm;
+      vnode0.$elm$ = new WeakRef(hostElm);
 
       const vnode1 = h('my-tag', null, h(DoesNotRenderChildren, null, '88'), h(RendersChildren, null, 'DMC'));
 
@@ -49,7 +49,7 @@ describe('renderer', () => {
       hostElm = document.createElement('my-tag');
 
       const vnode0 = newVNode(null, null);
-      vnode0.$elm$ = hostElm;
+      vnode0.$elm$ = new WeakRef(hostElm);
 
       const vnode1 = h('my-tag', null, h(functionalComp, { class: 'render-one' }));
 
@@ -69,7 +69,7 @@ describe('renderer', () => {
 
       hostElm = document.createElement('my-tag');
       vnode0 = newVNode(null, null);
-      vnode0.$elm$ = hostElm;
+      vnode0.$elm$ = new WeakRef(hostElm);
       patch(vnode0, h('my-tag', null, h(functionalComp, { class: 'functional-cmp' })));
       expect(hostElm.childNodes[0].tagName).toBe('SPAN');
       expect(hostElm.childNodes[0].textContent).toBe('');
@@ -83,7 +83,7 @@ describe('renderer', () => {
 
       hostElm = document.createElement('my-tag');
       vnode0 = newVNode(null, null);
-      vnode0.$elm$ = hostElm;
+      vnode0.$elm$ = new WeakRef(hostElm);
       patch(vnode0, h('my-tag', null, h('span', null, 'Test Child'), h(functionalComp, { class: 'functional-cmp' })));
       expect(hostElm.childNodes[0].tagName).toBe('SPAN');
       expect(hostElm.childNodes[0].textContent).toBe('Test Child');
@@ -99,7 +99,7 @@ describe('renderer', () => {
 
       hostElm = document.createElement('my-tag');
       vnode0 = newVNode(null, null);
-      vnode0.$elm$ = hostElm;
+      vnode0.$elm$ = new WeakRef(hostElm);
       patch(vnode0, h('my-tag', null, h(functionalComp, { class: 'functional-cmp' }, h('span', null, 'Test Child'))));
       expect(hostElm.childNodes[0].tagName).toBe('SPAN');
       expect(hostElm.childNodes[0].className).toBe('functional-cmp');
@@ -182,7 +182,7 @@ describe('renderer', () => {
 
         const nextVNode = h('div', null, h('span', null, 'Hi'));
         patch(toVNode(prevElm), nextVNode);
-        hostElm = nextVNode.$elm$;
+        hostElm = nextVNode.$elm$.deref();
 
         expect(hostElm).toEqual(prevElm);
         expect(hostElm.tagName).toEqual('DIV');
@@ -204,7 +204,7 @@ describe('renderer', () => {
 
         const nextVNode = h('div', null, h('span', null, 'Hi'));
         patch(toVNode(prevElm), nextVNode);
-        hostElm = nextVNode.$elm$;
+        hostElm = nextVNode.$elm$.deref();
 
         expect(hostElm).toEqual(prevElm);
         expect(hostElm.tagName).toEqual('DIV');
@@ -232,7 +232,7 @@ describe('renderer', () => {
 
         const nextVNode = h('div', null, 'Foobar');
         patch(toVNode(prevElm), nextVNode);
-        hostElm = nextVNode.$elm$;
+        hostElm = nextVNode.$elm$.deref();
 
         expect(hostElm).toEqual(prevElm);
         expect(hostElm.tagName).toEqual('DIV');
@@ -258,7 +258,7 @@ describe('renderer', () => {
 
         const nextVNode = h('div', null, h('h2', null, 'Hello'));
         patch(toVNode(prevElm), nextVNode);
-        hostElm = nextVNode.$elm$;
+        hostElm = nextVNode.$elm$.deref();
 
         expect(hostElm).toEqual(prevElm);
         expect(hostElm.tagName).toEqual('DIV');
@@ -407,18 +407,18 @@ describe('renderer', () => {
         });
 
         it('removes child svg elements', () => {
-          vnode0.$elm$ = document.createElement('svg') as any;
+          vnode0.$elm$ = new WeakRef(document.createElement('svg') as any);
 
           const a = h('svg', { n: SVG_NS }, h('g', null), h('g', null));
           const b = h('svg', { n: SVG_NS }, h('g', null));
 
           patch(vnode0, a);
-          const resultA = toVNode(vnode0.$elm$);
-          expect(resultA.$elm$.childNodes.length).toEqual(2);
+          const resultA = toVNode(vnode0.$elm$.deref());
+          expect(resultA.$elm$.deref().childNodes.length).toEqual(2);
 
           patch(resultA, b);
-          const resultB = toVNode(resultA.$elm$);
-          expect(resultB.$elm$.childNodes.length).toEqual(1);
+          const resultB = toVNode(resultA.$elm$.deref());
+          expect(resultB.$elm$.deref().childNodes.length).toEqual(1);
         });
       });
 
@@ -604,9 +604,9 @@ describe('renderer', () => {
 
           const shufArr = shuffleArray(arr.slice(0));
           let elm: any = document.createElement('div');
-          vnode0.$elm$ = elm;
+          vnode0.$elm$ = new WeakRef(elm);
           patch(vnode0, vnode1);
-          elm = vnode1.$elm$;
+          elm = vnode1.$elm$.deref();
 
           for (i = 0; i < elms; ++i) {
             expect(elm.children[i].innerHTML).toEqual(i.toString());
@@ -622,7 +622,7 @@ describe('renderer', () => {
           );
 
           patch(vnode1, vnode2);
-          elm = vnode2.$elm$;
+          elm = vnode2.$elm$.deref();
           for (i = 0; i < elms; ++i) {
             expect(elm.children[i].innerHTML).toEqual(shufArr[i].toString());
             expect(opacities[i].indexOf(elm.children[i].style.opacity)).toEqual(0);
