@@ -33,7 +33,7 @@ export const bootstrapLazy = (lazyBundles: d.LazyBundlesRuntimeData, options: d.
   const head = doc.head;
   const metaCharset = /*@__PURE__*/ head.querySelector('meta[charset]');
   const dataStyles = /*@__PURE__*/ doc.createElement('style');
-  const deferredConnectedCallbacks: { connectedCallback: () => void }[] = [];
+  const deferredConnectedCallbacks: WeakRef<{ connectedCallback: () => void }>[] = [];
   let appLoadFallback: any;
   let isBootstrapping = true;
 
@@ -151,7 +151,7 @@ export const bootstrapLazy = (lazyBundles: d.LazyBundlesRuntimeData, options: d.
           }
           if (isBootstrapping) {
             // connectedCallback will be processed once all components have been registered
-            deferredConnectedCallbacks.push(this);
+            deferredConnectedCallbacks.push(new WeakRef(this));
           } else {
             plt.jmp(() => connectedCallback(this));
           }
@@ -162,7 +162,7 @@ export const bootstrapLazy = (lazyBundles: d.LazyBundlesRuntimeData, options: d.
         }
 
         componentOnReady() {
-          return getHostRef(this).$onReadyPromise$;
+          return getHostRef(this).$onReadyPromise$.then((ref) => ref.deref());
         }
       };
 
@@ -248,7 +248,7 @@ export const bootstrapLazy = (lazyBundles: d.LazyBundlesRuntimeData, options: d.
   // Process deferred connectedCallbacks now all components have been registered
   isBootstrapping = false;
   if (deferredConnectedCallbacks.length) {
-    deferredConnectedCallbacks.map((host) => host.connectedCallback());
+    deferredConnectedCallbacks.map((host) => host.deref().connectedCallback());
   } else {
     if (BUILD.profile) {
       plt.jmp(() => (appLoadFallback = setTimeout(appDidLoad, 30, 'timeout')));

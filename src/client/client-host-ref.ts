@@ -39,7 +39,6 @@ export const getHostRef = (ref: d.RuntimeRef): d.HostRef | undefined => hostRefs
  */
 export const registerInstance = (lazyInstance: any, hostRef: d.HostRef) => {
   hostRef.$lazyInstance$ = new WeakRef(lazyInstance);
-  console.log('REGISTER INSTANCE', hostRef);
   return hostRefs.set(lazyInstance, hostRef);
 };
 

@@ -58,7 +58,7 @@ const inspect = (ref: any) => {
       needsRerender: !!(flags & HOST_FLAGS.needsRerender),
     },
     instanceValues: hostRef.$instanceValues$,
-    ancestorComponent: hostRef.$ancestorComponent$,
+    ancestorComponent: hostRef.$ancestorComponent$?.deref(),
     hostElement,
     lazyInstance: hostRef.$lazyInstance$.deref(),
     vnode: hostRef.$vnode$,

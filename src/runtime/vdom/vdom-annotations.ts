@@ -167,7 +167,7 @@ const insertVNodeAnnotations = (
     // If this element does not already have a child ID and has a sibling comment node
     // representing a slot, we use the content of the comment to set the child ID attribute
     // on the host element.
-    if (hostElm && vnode && vnode.$elm$ && !hostElm.hasAttribute(HYDRATE_CHILD_ID)) {
+    if (hostElm && vnode && vnode.$elm$?.deref() && !hostElm.hasAttribute(HYDRATE_CHILD_ID)) {
       const parent: HTMLElement | null = hostElm.parentElement;
       if (parent && parent.childNodes) {
         const parentChildNodes: ChildNode[] = Array.from(parent.childNodes);
@@ -176,7 +176,7 @@ const insertVNodeAnnotations = (
         ) as d.RenderNode | undefined;
         if (comment) {
           const index: number = parentChildNodes.indexOf(hostElm) - 1;
-          (vnode.$elm$ as d.RenderNode).setAttribute(
+          (vnode.$elm$.deref() as d.RenderNode).setAttribute(
             HYDRATE_CHILD_ID,
             `${comment['s-host-id']}.${comment['s-node-id']}.0.${index}`,
           );
@@ -206,7 +206,7 @@ const insertChildVNodeAnnotations = (
   depth: number,
   index: number,
 ) => {
-  const childElm = vnodeChild.$elm$ as d.RenderNode;
+  const childElm = vnodeChild.$elm$?.deref() as d.RenderNode;
   if (childElm == null) {
     return;
   }

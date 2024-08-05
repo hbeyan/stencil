@@ -35,7 +35,6 @@ export const setValue = (ref: d.RuntimeRef, propName: string, newVal: any, cmpMe
   const elm = BUILD.lazyLoad ? hostRef.$hostElement$.deref() : (ref as d.HostElement);
   const oldVal = hostRef.$instanceValues$.get(propName);
   const flags = hostRef.$flags$;
-  console.log('IDK', hostRef, hostRef.$lazyInstance$);
   const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$?.deref() : (elm as any);
   newVal = parsePropertyValue(newVal, cmpMeta.$members$[propName][0]);
 
