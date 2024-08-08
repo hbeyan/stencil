@@ -36,8 +36,8 @@ export const proxyComponent = (
           const elm = BUILD.lazyLoad ? hostRef.$hostElement$.deref() : this;
           const instance: d.ComponentInterface = BUILD.lazyLoad ? hostRef.$lazyInstance$.deref() : elm;
           if (!instance) {
-            hostRef.$onReadyPromise$.then((instance) => {
-              const cb = (instance.deref() as d.ComponentInterface)[cbName];
+            hostRef.$onReadyPromise$.then((instance: d.ComponentInterface) => {
+              const cb = instance[cbName];
               typeof cb === 'function' && cb.call(instance, ...args);
             });
           } else {

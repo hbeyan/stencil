@@ -13,11 +13,11 @@ import { newVNode } from './h';
 export function toVNode(node: Node): d.VNode | null {
   if (node.nodeType === NODE_TYPE.TextNode) {
     const vnode: d.VNode = newVNode(null, node.textContent);
-    vnode.$elm$ = new WeakRef(node);
+    vnode.$elm$ = node;
     return vnode;
   } else if (node.nodeType === NODE_TYPE.ElementNode) {
     const vnode: d.VNode = newVNode(node.nodeName.toLowerCase(), null);
-    vnode.$elm$ = new WeakRef(node);
+    vnode.$elm$ = node;
 
     const childNodes = node.childNodes;
     let childVnode: d.VNode;

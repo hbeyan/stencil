@@ -99,7 +99,7 @@ export function proxyHostElement(elm: d.HostElement, cmpMeta: d.ComponentRuntime
 }
 
 function componentOnReady(this: d.HostElement) {
-  return getHostRef(this)?.$onReadyPromise$.then((ref) => ref.deref());
+  return getHostRef(this)?.$onReadyPromise$;
 }
 
 function forceUpdate(this: d.HostElement) {

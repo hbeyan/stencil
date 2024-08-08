@@ -50,7 +50,7 @@ export const initializeClientHydrate = (
   childRenderNodes.map((c) => {
     const orgLocationId = c.$hostId$ + '.' + c.$nodeId$;
     const orgLocationNode = plt.$orgLocNodes$.get(orgLocationId);
-    const node = c.$elm$.deref() as d.RenderNode;
+    const node = c.$elm$ as d.RenderNode;
 
     // Put the node back in its original location since the native Shadow DOM
     // can handle rendering it its correct location now
@@ -125,7 +125,7 @@ const clientHydrate = (
           $depth$: childIdSplt[2],
           $index$: childIdSplt[3],
           $tag$: node.tagName.toLowerCase(),
-          $elm$: new WeakRef(node),
+          $elm$: node,
           $attrs$: null,
           $children$: null,
           $key$: null,
@@ -149,7 +149,7 @@ const clientHydrate = (
         parentVNode = childVNode;
 
         if (shadowRootNodes && childVNode.$depth$ === '0') {
-          shadowRootNodes[childVNode.$index$ as any] = childVNode.$elm$.deref();
+          shadowRootNodes[childVNode.$index$ as any] = childVNode.$elm$;
         }
       }
     }
@@ -195,7 +195,7 @@ const clientHydrate = (
         $nodeId$: childIdSplt[2],
         $depth$: childIdSplt[3],
         $index$: childIdSplt[4],
-        $elm$: new WeakRef(node),
+        $elm$: node,
         $attrs$: null,
         $children$: null,
         $key$: null,
@@ -205,9 +205,9 @@ const clientHydrate = (
       };
 
       if (childNodeType === TEXT_NODE_ID) {
-        childVNode.$elm$ = new WeakRef(node.nextSibling as any);
-        if (childVNode.$elm$ && childVNode.$elm$?.deref()?.nodeType === NODE_TYPE.TextNode) {
-          childVNode.$text$ = childVNode.$elm$.deref().textContent;
+        childVNode.$elm$ = node.nextSibling as any;
+        if (childVNode.$elm$ && childVNode.$elm$.nodeType === NODE_TYPE.TextNode) {
+          childVNode.$text$ = childVNode.$elm$.textContent;
           childRenderNodes.push(childVNode);
 
           // remove the text comment since it's no longer needed
@@ -219,7 +219,7 @@ const clientHydrate = (
           parentVNode.$children$[childVNode.$index$ as any] = childVNode;
 
           if (shadowRootNodes && childVNode.$depth$ === '0') {
-            shadowRootNodes[childVNode.$index$ as any] = childVNode.$elm$.deref();
+            shadowRootNodes[childVNode.$index$ as any] = childVNode.$elm$;
           }
         }
       } else if (childVNode.$hostId$ === hostId) {
@@ -239,22 +239,21 @@ const clientHydrate = (
           if (BUILD.shadowDom && shadowRootNodes) {
             // browser support shadowRoot and this is a shadow dom component
             // create an actual slot element
-            const elm = doc.createElement(childVNode.$tag$);
-            childVNode.$elm$ = new WeakRef(elm);
+            childVNode.$elm$ = doc.createElement(childVNode.$tag$);
 
             if (childVNode.$name$) {
               // add the slot name attribute
-              elm.setAttribute('name', childVNode.$name$);
+              childVNode.$elm$.setAttribute('name', childVNode.$name$);
             }
 
             // insert the new slot element before the slot comment
-            node.parentNode.insertBefore(elm, node);
+            node.parentNode.insertBefore(childVNode.$elm$, node);
 
             // remove the slot comment since it's not needed for shadow
             node.remove();
 
             if (childVNode.$depth$ === '0') {
-              shadowRootNodes[childVNode.$index$ as any] = childVNode.$elm$.deref();
+              shadowRootNodes[childVNode.$index$ as any] = childVNode.$elm$;
             }
           }
 
@@ -278,7 +277,7 @@ const clientHydrate = (
     }
   } else if (parentVNode && parentVNode.$tag$ === 'style') {
     const vnode = newVNode(null, node.textContent) as any;
-    vnode.$elm$ = new WeakRef(node);
+    vnode.$elm$ = node;
     vnode.$index$ = '0';
     parentVNode.$children$ = [vnode];
   }

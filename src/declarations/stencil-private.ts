@@ -1566,7 +1566,7 @@ export type RuntimeRef = HostElement | {};
  * Interface used to track an Element, it's virtual Node (`VNode`), and other data
  */
 export interface HostRef {
-  $ancestorComponent$?: WeakRef<HostElement>;
+  $ancestorComponent$?: HostElement;
   $flags$: number;
   $cmpMeta$: ComponentRuntimeMeta;
   $hostElement$: WeakRef<HostElement>;
@@ -1576,23 +1576,23 @@ export interface HostRef {
    * A promise that gets resolved if `BUILD.asyncLoading` is enabled and after the `componentDidLoad`
    * and before the `componentDidUpdate` lifecycle events are triggered.
    */
-  $onReadyPromise$?: Promise<WeakRef<HostElement>>;
+  $onReadyPromise$?: Promise<HostElement>;
   /**
    * A callback which resolves {@link HostRef.$onReadyPromise$}
    * @param elm host element
    */
-  $onReadyResolve$?: (elm: WeakRef<HostElement>) => void;
+  $onReadyResolve$?: (elm: HostElement) => void;
   /**
    * A promise which resolves with the host component once it has finished rendering
    * for the first time. This is primarily used to wait for the first `update` to be
    * called on a component.
    */
-  $onInstancePromise$?: Promise<WeakRef<HostElement>>;
+  $onInstancePromise$?: Promise<HostElement>;
   /**
    * A callback which resolves {@link HostRef.$onInstancePromise$}
    * @param elm host element
    */
-  $onInstanceResolve$?: (elm: WeakRef<HostElement>) => void;
+  $onInstanceResolve$?: (elm: HostElement) => void;
   /**
    * A promise which resolves when the component has finished rendering for the first time.
    * It is called after {@link HostRef.$onInstancePromise$} resolves.
