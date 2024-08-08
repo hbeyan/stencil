@@ -7,7 +7,7 @@ describe('toVNode()', () => {
 
     const vnode = toVNode(elm);
 
-    expect(vnode.$elm$).toBe(elm);
+    expect(vnode.$elm$.deref()).toBe(elm);
     expect(vnode.$tag$).toBe('h1');
 
     expect(vnode.$children$).toBeDefined();
@@ -30,7 +30,7 @@ describe('toVNode()', () => {
     const elm = document.createElement('h1');
     elm.textContent = '88mph';
     const vnode = toVNode(elm);
-    expect(vnode.$elm$).toBe(elm);
+    expect(vnode.$elm$.deref()).toBe(elm);
     expect(vnode.$tag$).toBe('h1');
     expect(vnode.$children$).toBeDefined();
     expect(vnode.$children$.length).toBe(1);
@@ -40,7 +40,7 @@ describe('toVNode()', () => {
   it('should create element', () => {
     const elm = document.createElement('h1');
     const vnode = toVNode(elm);
-    expect(vnode.$elm$).toBe(elm);
+    expect(vnode.$elm$.deref()).toBe(elm);
     expect(vnode.$tag$).toBe('h1');
     expect(vnode.$children$).toBeNull();
   });
