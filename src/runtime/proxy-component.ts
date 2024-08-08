@@ -33,7 +33,7 @@ export const proxyComponent = (
       Object.defineProperty(prototype, cbName, {
         value(this: d.HostElement, ...args: any[]) {
           const hostRef = getHostRef(this);
-          const elm = BUILD.lazyLoad ? hostRef.$hostElement$ : this;
+          const elm = BUILD.lazyLoad ? hostRef.$hostElement$.deref() : this;
           const instance: d.ComponentInterface = BUILD.lazyLoad ? hostRef.$lazyInstance$ : elm;
           if (!instance) {
             hostRef.$onReadyPromise$.then((instance: d.ComponentInterface) => {
@@ -177,7 +177,7 @@ export const proxyComponent = (
               flags & HOST_FLAGS.isWatchReady &&
               newValue !== oldValue
             ) {
-              const elm = BUILD.lazyLoad ? hostRef.$hostElement$ : this;
+              const elm = BUILD.lazyLoad ? hostRef.$hostElement$.deref() : this;
               const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$ : (elm as any);
               const entry = cmpMeta.$watchers$?.[attrName];
               entry?.forEach((callbackName) => {

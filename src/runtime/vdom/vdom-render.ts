@@ -1023,7 +1023,7 @@ interface RelocateNodeData {
  * @param isInitialLoad whether or not this is the first call after page load
  */
 export const renderVdom = (hostRef: d.HostRef, renderFnResults: d.VNode | d.VNode[], isInitialLoad = false) => {
-  const hostElm = hostRef.$hostElement$;
+  const hostElm = hostRef.$hostElement$.deref();
   const cmpMeta = hostRef.$cmpMeta$;
   const oldVNode: d.VNode = hostRef.$vnode$ || newVNode(null, null);
 
