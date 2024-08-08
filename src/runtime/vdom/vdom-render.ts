@@ -630,7 +630,7 @@ export const isSameVnode = (leftVNode: d.VNode, rightVNode: d.VNode, isInitialRe
         isInitialRender &&
         // `leftNode` is not from type HTMLComment which would cause many
         // hydration comments to be removed
-        leftVNode.$elm$.nodeType !== 8
+        leftVNode.$elm$.deref().nodeType !== 8
       ) {
         return false;
       }
