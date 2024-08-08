@@ -23,7 +23,7 @@ export const scheduleUpdate = (hostRef: d.HostRef, isInitialLoad: boolean) => {
     hostRef.$flags$ |= HOST_FLAGS.needsRerender;
     return;
   }
-  attachToAncestor(hostRef, hostRef.$ancestorComponent$);
+  attachToAncestor(hostRef, hostRef.$ancestorComponent$?.deref());
 
   // there is no ancestor component or the ancestor component
   // has already fired off its lifecycle update then
@@ -312,7 +312,7 @@ export const postUpdateComponent = (hostRef: d.HostRef) => {
   const elm = hostRef.$hostElement$.deref();
   const endPostUpdate = createTime('postUpdate', tagName);
   const instance = BUILD.lazyLoad ? hostRef.$lazyInstance$ : (elm as any);
-  const ancestorComponent = hostRef.$ancestorComponent$;
+  const ancestorComponent = hostRef.$ancestorComponent$?.deref();
 
   if (BUILD.cmpDidRender) {
     if (BUILD.isDev) {
