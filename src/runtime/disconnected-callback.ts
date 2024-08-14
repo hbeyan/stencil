@@ -1,5 +1,5 @@
 import { BUILD } from '@app-data';
-import { getHostRef, plt } from '@platform';
+import { clearHostRef, getHostRef, plt } from '@platform';
 
 import type * as d from '../declarations';
 import { PLATFORM_FLAGS } from './runtime-constants';
@@ -27,10 +27,15 @@ export const disconnectedCallback = async (elm: d.HostElement) => {
 
     if (!BUILD.lazyLoad) {
       disconnectInstance(elm);
+      clearHostRef(elm);
     } else if (hostRef?.$lazyInstance$) {
       disconnectInstance(hostRef.$lazyInstance$);
+      clearHostRef(hostRef.$lazyInstance$);
     } else if (hostRef?.$onReadyPromise$) {
-      hostRef.$onReadyPromise$.then(() => disconnectInstance(hostRef.$lazyInstance$));
+      hostRef.$onReadyPromise$.then(() => {
+        disconnectInstance(hostRef.$lazyInstance$);
+        clearHostRef(hostRef.$lazyInstance$);
+      });
     }
   }
 };

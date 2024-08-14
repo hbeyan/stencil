@@ -29,6 +29,18 @@ const hostRefs: WeakMap<d.RuntimeRef, d.HostRef> = /*@__PURE__*/ BUILD.hotModule
  */
 export const getHostRef = (ref: d.RuntimeRef): d.HostRef | undefined => hostRefs.get(ref);
 
+export const clearHostRef = (ref: d.RuntimeRef) => {
+  const hostRef = hostRefs.get(ref);
+
+  // console.log('clearHostRef', hostRef);
+
+  if (hostRefs.has(hostRef.$hostElement$.deref())) {
+    hostRefs.delete(hostRef.$hostElement$.deref());
+  }
+
+  hostRefs.delete(ref);
+};
+
 /**
  * Register a lazy instance with the {@link hostRefs} object so it's
  * corresponding {@link d.HostRef} can be retrieved later.
